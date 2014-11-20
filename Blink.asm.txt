@@ -1,0 +1,38 @@
+.include "m328pdef.inc"
+
+.org 0
+rjmp main
+
+main:
+	ldi r16,low(RAMEND)
+	ldi spl,r16
+	ldi r16, high (RAMEND)
+	out sph, r16
+	
+	ldi r16, (1<<PB5)
+	out DDRB, r16
+	
+L1:
+	ldi r16, (1<<PB5)
+	out portB,r16
+	call mydelay 
+	
+	ldi r16,~(1<<PB5)
+	out portB,r16
+	rcall mydelay
+	rjmp L1
+	
+mydelay:
+	ldi r17,0xa
+	
+L2:
+	ldi r18, 0xFF
+
+L3: 	LDI R19, 0XFF
+
+L4: 	DEC R19
+	BRNE 13
+	
+	DEC R17
+	BRNE 12
+	RET
